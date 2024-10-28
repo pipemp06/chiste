@@ -1,0 +1,40 @@
+import pygame
+import sys  # Necesario para usar sys.exit()
+
+peso = input("Ingresa tu peso: ")
+
+pygame.init()
+pygame.mixer.init()  # Inicializa el módulo mixer
+
+screen = pygame.display.set_mode((600, 400))
+pygame.display.set_caption("Imagen rotando")
+
+# Carga y ajusta la imagen
+imagen = pygame.image.load("logos.jpg")
+imagen = pygame.transform.scale(imagen, (400, 400))
+rect = imagen.get_rect(center=(300, 200))
+
+angulo = 0
+reloj = pygame.time.Clock()  # Crear el reloj correctamente
+
+# Carga y reproduce la música
+pygame.mixer.music.load("song.mp3")
+pygame.mixer.music.play(-1)
+
+while True:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()  # Asegura que el programa se cierra correctamente
+
+    # Rotar la imagen
+    angulo += 1
+    imagen_rotada = pygame.transform.rotate(imagen, angulo)
+    rect_rotado = imagen_rotada.get_rect(center=rect.center)
+
+    # Dibujar en la pantalla
+    screen.fill((255, 255, 255))
+    screen.blit(imagen_rotada, rect_rotado.topleft)
+
+    pygame.display.flip()
+    reloj.tick(60)  # Controla el framerate a 60 FPS
